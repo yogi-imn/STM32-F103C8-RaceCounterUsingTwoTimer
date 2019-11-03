@@ -1,5 +1,4 @@
-Src/main.o: ../Src/main.c ../Inc/device.h ../Inc/hardwareinit.h \
- ../Inc/Library-I2C-LCD.h \
+Src/Library-I2C-LCD.o: ../Src/Library-I2C-LCD.c ../Inc/Library-I2C-LCD.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h \
  ../Inc/stm32f1xx_hal_conf.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h \
@@ -25,10 +24,6 @@ Src/main.o: ../Src/main.c ../Inc/device.h ../Inc/hardwareinit.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
-
-../Inc/device.h:
-
-../Inc/hardwareinit.h:
 
 ../Inc/Library-I2C-LCD.h:
 
