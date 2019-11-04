@@ -1,6 +1,7 @@
 hardwareinit.c:16:6:SystemClock_Config	72	static
-hardwareinit.c:54:6:MX_GPIO_Init	40	static
-hardwareinit.c:102:6:MX_I2C2_Init	8	static
-hardwareinit.c:136:6:MX_USART1_UART_Init	8	static
-hardwareinit.c:169:6:MX_TIM2_Init	32	static
-hardwareinit.c:214:6:MX_TIM4_Init	32	static
+hardwareinit.c:52:6:MX_GPIO_Init	40	static
+hardwareinit.c:100:6:MX_I2C2_Init	8	static
+hardwareinit.c:119:6:MX_USART1_UART_Init	8	static
+hardwareinit.c:137:6:MX_TIM2_Init	32	static
+hardwareinit.c:162:6:MX_TIM4_Init	40	static
+hardwareinit.c:182:6:System_Init	8	static

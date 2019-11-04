@@ -30,55 +30,10 @@ extern "C" {
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f1xx_hal.h"
 
-/* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
-
-/* USER CODE END Includes */
-
-/* Exported types ------------------------------------------------------------*/
-/* USER CODE BEGIN ET */
-
-/* USER CODE END ET */
-
-/* Exported constants --------------------------------------------------------*/
-/* USER CODE BEGIN EC */
-
-/* USER CODE END EC */
-
-/* Exported macro ------------------------------------------------------------*/
-/* USER CODE BEGIN EM */
-
-/* USER CODE END EM */
-
 /* Exported functions prototypes ---------------------------------------------*/
-void Error_Handler(void);
+void _Error_Handler(char *, int);
 
-/* USER CODE BEGIN EFP */
-
-/* USER CODE END EFP */
-
-/* Private defines -----------------------------------------------------------*/
-#define LED3_Pin GPIO_PIN_13
-#define LED3_GPIO_Port GPIOC
-#define LED2_Pin GPIO_PIN_14
-#define LED2_GPIO_Port GPIOC
-#define LED1_Pin GPIO_PIN_15
-#define LED1_GPIO_Port GPIOC
-#define Buzzer_Pin GPIO_PIN_1
-#define Buzzer_GPIO_Port GPIOB
-#define Sensor3_Pin GPIO_PIN_13
-#define Sensor3_GPIO_Port GPIOB
-#define Sensor2_Pin GPIO_PIN_14
-#define Sensor2_GPIO_Port GPIOB
-#define Sensor1_Pin GPIO_PIN_15
-#define Sensor1_GPIO_Port GPIOB
-#define PBReset_Pin GPIO_PIN_8
-#define PBReset_GPIO_Port GPIOB
-#define PBOn_Pin GPIO_PIN_9
-#define PBOn_GPIO_Port GPIOB
-/* USER CODE BEGIN Private defines */
-
-/* USER CODE END Private defines */
+#define Error_Handler() _Error_Handler(__FILE__, __LINE__)
 
 #ifdef __cplusplus
 }
