@@ -54,7 +54,7 @@ min3                0x4               Src/sensor.o
 huart1              0x40              Src/hardwareinit.o
 milisec2            0x4               Src/sensor.o
 milisec1            0x4               Src/sensor.o
-buffer              0x17              Src/sensor.o
+buffer              0x15              Src/sensor.o
 min2                0x4               Src/sensor.o
 sec3                0x4               Src/sensor.o
 htim2               0x40              Src/hardwareinit.o

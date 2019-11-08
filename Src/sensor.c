@@ -13,10 +13,11 @@
 #include "stdio.h"
 
 unsigned int milisec=0,sec=0,min=0;
-char buffer[23],buffertimer[10],buffs[13];
+//uint2_t milisec=0,sec=0,min=0;
+char buffer[21],buffertimer[10],buffs[13];
 unsigned int runstop=0;
-
 unsigned int lapA=0,lapB=0,lapC=0,totlap=5;
+
 unsigned int milisec1,sec1,min1,miliseclast1=0,seclast1=0,minlast1=0;
 unsigned int milisec2,sec2,min2,miliseclast2=0,seclast2=0,minlast2=0;
 unsigned int milisec3,sec3,min3,miliseclast3=0,seclast3=0,minlast3=0;
@@ -341,15 +342,15 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
 	if(htim->Instance==TIM2){
 		milisec++;
-		if(milisec>=100){
+		if(milisec>100){
 			sec++;
 			milisec=0;
 		}
-		if(sec>=60){
+		if(sec>60){
 			min++;
 			sec=0;
 		}
-		if(min>=100){
+		if(min>60){
 			milisec=0;
 			sec=0;
 			min=0;
