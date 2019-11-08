@@ -13,7 +13,7 @@
 #include "stdio.h"
 
 unsigned int milisec=0,sec=0,min=0;
-char buffer[22],buffertimer[10],buffs[13];
+char buffer[23],buffertimer[10],buffs[13];
 unsigned int runstop=0;
 
 unsigned int lapA=0,lapB=0,lapC=0,totlap=5;
@@ -296,43 +296,40 @@ void DearLCD(void)
 {
 	//LAP TIME
 	lcd_send_cmd(0x80);
-	sprintf(buffer,"Lap Time  %d%d:%d%d:%d%d ",(min/10),(min%10),(sec/10),(sec%10),(milisec/10),(milisec%10));
-	lcd_send_string(buffer);
-	lcd_send_cmd(0xe2);
-	sprintf(buffer," ");
+	sprintf(buffer," [Lap Time] %d%d:%d%d:%d%d",(min/10),(min%10),(sec/10),(sec%10),(milisec/10),(milisec%10));
 	lcd_send_string(buffer);
 
 	//TrackA
 	if(lapA<totlap){
 		lcd_send_cmd(0xc0);
-		sprintf(buffer,"Lap%dA=%d%d:%d%d:%d%d",(lapA),(min1/10),(min1%10),(sec1/10),(sec1%10),(milisec1/10),(milisec1%10));
+		sprintf(buffer,"TrackA=%d%d:%d%d:%d%d Lap%d",(min1/10),(min1%10),(sec1/10),(sec1%10),(milisec1/10),(milisec1%10),(lapA));
 		lcd_send_string(buffer);
 	}
 	else if(lapA==totlap){
 		lcd_send_cmd(0xc0);
-		sprintf(buffer,"A = FINISH");
+		sprintf(buffer,"TrackA = FINISH YEAY");
 		lcd_send_string(buffer);
 	}
 	//TrackB
 	if(lapB<totlap){
 		lcd_send_cmd(0x94);
-		sprintf(buffer,"Lap%dB=%d%d:%d%d:%d%d",(lapB),(min2/10),(min2%10),(sec2/10),(sec2%10),(milisec2/10),(milisec2%10));
+		sprintf(buffer,"TrackB=%d%d:%d%d:%d%d Lap%d",(min2/10),(min2%10),(sec2/10),(sec2%10),(milisec2/10),(milisec2%10),(lapB));
 		lcd_send_string(buffer);
 	}
 	else if(lapB==totlap){
 		lcd_send_cmd(0x94);
-		sprintf(buffer,"B = FINISH");
+		sprintf(buffer,"TrackB = FINISH YEAY");
 		lcd_send_string(buffer);
 	}
 	//TrackC
 	if(lapC<totlap){
 		lcd_send_cmd(0xd4);
-		sprintf(buffer,"Lap%dC=%d%d:%d%d:%d%d",(lapC),(min3/10),(min3%10),(sec3/10),(sec3%10),(milisec2/10),(milisec2%10));
+		sprintf(buffer,"TrackC=%d%d:%d%d:%d%d Lap%d",(min3/10),(min3%10),(sec3/10),(sec3%10),(milisec2/10),(milisec2%10),(lapC));
 		lcd_send_string(buffer);
 	}
 	else if(lapC==totlap){
 		lcd_send_cmd(0xd4);
-		sprintf(buffer,"C = FINISH");
+		sprintf(buffer,"TrackC = FINISH YEAY");
 		lcd_send_string(buffer);
 	}
 
