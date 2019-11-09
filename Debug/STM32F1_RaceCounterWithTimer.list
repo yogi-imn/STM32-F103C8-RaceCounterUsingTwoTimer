@@ -6760,7 +6760,7 @@ void MX_TIM2_Init(void)
  80026ba:	4b16      	ldr	r3, [pc, #88]	; (8002714 <MX_TIM2_Init+0x60>)
  80026bc:	f04f 4280 	mov.w	r2, #1073741824	; 0x40000000
  80026c0:	601a      	str	r2, [r3, #0]
-	htim2.Init.Prescaler = 36000-1;
+	htim2.Init.Prescaler = 35999;//36000-1
  80026c2:	4b14      	ldr	r3, [pc, #80]	; (8002714 <MX_TIM2_Init+0x60>)
  80026c4:	f648 429f 	movw	r2, #35999	; 0x8c9f
  80026c8:	605a      	str	r2, [r3, #4]
@@ -6768,7 +6768,7 @@ void MX_TIM2_Init(void)
  80026ca:	4b12      	ldr	r3, [pc, #72]	; (8002714 <MX_TIM2_Init+0x60>)
  80026cc:	2200      	movs	r2, #0
  80026ce:	609a      	str	r2, [r3, #8]
-	htim2.Init.Period = 20-1;
+	htim2.Init.Period = 19;//20-1
  80026d0:	4b10      	ldr	r3, [pc, #64]	; (8002714 <MX_TIM2_Init+0x60>)
  80026d2:	2213      	movs	r2, #19
  80026d4:	60da      	str	r2, [r3, #12]
