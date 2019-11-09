@@ -121,6 +121,54 @@ void PBReset(void)
 		milisec3=0;	sec3=0;	min3=0;
 		lapA=0;	lapB=0;	lapC=0;
 
+		lcd_send_cmd(0x80);
+		sprintf(buffer," [Lap Time] ");
+		lcd_send_string(buffer);
+		lcd_send_cmd(0x8c);
+		sprintf(buffer,"00");
+		lcd_send_string(buffer);
+		lcd_send_cmd(0x8e);
+		sprintf(buffer,":");
+		lcd_send_string(buffer);
+		lcd_send_cmd(0x8f);
+		sprintf(buffer,"00");
+		lcd_send_string(buffer);
+		lcd_send_cmd(0x91);
+		sprintf(buffer,":");
+		lcd_send_string(buffer);
+		lcd_send_cmd(0x92);
+		sprintf(buffer,"00");
+		lcd_send_string(buffer);
+		//TrackA
+		lcd_send_cmd(0xc0);
+		sprintf(buffer,"TrackA=");
+		lcd_send_string(buffer);
+		lcd_send_cmd(0xc7);
+		sprintf(buffer,"00:00:00 ");
+		lcd_send_string(buffer);
+		lcd_send_cmd(0xd0);
+		sprintf(buffer,"Lap%d",lapA);
+		lcd_send_string(buffer);
+		//TrackB
+		lcd_send_cmd(0x94);
+		sprintf(buffer,"TrackB=");
+		lcd_send_string(buffer);
+		lcd_send_cmd(0x9b);
+		sprintf(buffer,"00:00:00 ");
+		lcd_send_string(buffer);
+		lcd_send_cmd(0xa4);
+		sprintf(buffer,"Lap%d",lapB);
+		lcd_send_string(buffer);
+		//TrackC
+		lcd_send_cmd(0xd4);
+		sprintf(buffer,"TrackC=");
+		lcd_send_string(buffer);
+		lcd_send_cmd(0xdb);
+		sprintf(buffer,"00:00:00 ");
+		lcd_send_string(buffer);
+		lcd_send_cmd(0xe4);
+		sprintf(buffer,"Lap%d",lapC);
+		lcd_send_string(buffer);
 	}
 }
 
@@ -157,19 +205,23 @@ void Sensor1(void)
 
 	if (bouncing3==0xFE){
 
-		milisec1=milisec-miliseclast1;
+		milisec1=milisec;
+		//milisec1=milisec-miliseclast1;
 		miliseclast1=milisec;
 
-		sec1=sec-seclast1;
+		sec1=sec;
+		//sec1=sec-seclast1;
 		seclast1=sec;
 
-		min1=min-minlast1;
+		min1=min;
+		//min1=min-minlast1;
 		minlast1=min;
 
 		if(runstop==1)	lapA++;
 		else 			lapA=0;
 
 		if(lapA<5){
+			//sprintf(buffs,"%d = %d:%d:%d",lapA,min1,sec1,milisec1);
 			sprintf(buffs,"%d = %d%d:%d%d:%d%d",lapA,(min1/10),(min1%10),(sec1/10),(sec1%10),(milisec1/10),(milisec1%10));
 			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rTrack A Lap:",14,10);
 			HAL_UART_Transmit(&huart1,(uint8_t*)buffs,sizeof(buffs),10);
@@ -213,13 +265,16 @@ void Sensor2(void)
 
 	if (bouncing4==0xFE){
 
-		milisec2=milisec-miliseclast2;
+		milisec2=milisec;
+		//milisec2=milisec-miliseclast2;
 		miliseclast2=milisec;
 
-		sec2=sec-seclast2;
+		sec2=sec;
+		//sec2=sec-seclast2;
 		seclast2=sec;
 
-		min2=min-minlast2;
+		min2=min;
+		//min2=min-minlast2;
 		minlast2=min;
 
 		if(runstop==1)	lapB++;
@@ -269,13 +324,16 @@ void Sensor3(void)
 
 	if (bouncing5==0xFE){
 
-		milisec3=milisec-miliseclast3;
+		milisec3=milisec;
+		//milisec3=milisec-miliseclast3;
 		miliseclast3=milisec;
 
-		sec3=sec-seclast3;
+		sec3=sec;
+		//sec3=sec-seclast3;
 		seclast3=sec;
 
-		min3=min-minlast3;
+		min3=min;
+		//min3=min-minlast3;
 		minlast3=min;
 
 		if(runstop==1)	lapC++;
@@ -293,17 +351,111 @@ void Sensor3(void)
 	}
 }
 
+void LCDAwal(void)
+{
+	lcd_send_cmd(0x80);
+	sprintf(buffer," [Lap Time] ");
+	lcd_send_string(buffer);
+	lcd_send_cmd(0x8c);
+	sprintf(buffer,"00");
+	lcd_send_string(buffer);
+	lcd_send_cmd(0x8e);
+	sprintf(buffer,":");
+	lcd_send_string(buffer);
+	lcd_send_cmd(0x8f);
+	sprintf(buffer,"00");
+	lcd_send_string(buffer);
+	lcd_send_cmd(0x91);
+	sprintf(buffer,":");
+	lcd_send_string(buffer);
+	lcd_send_cmd(0x92);
+	sprintf(buffer,"00");
+	lcd_send_string(buffer);
+	//TrackA
+	lcd_send_cmd(0xc0);
+	sprintf(buffer,"TrackA=");
+	lcd_send_string(buffer);
+	lcd_send_cmd(0xc7);
+	sprintf(buffer,"00:00:00 ");
+	lcd_send_string(buffer);
+	lcd_send_cmd(0xd0);
+	sprintf(buffer,"Lap%d",lapA);
+	lcd_send_string(buffer);
+	//TrackB
+	lcd_send_cmd(0x94);
+	sprintf(buffer,"TrackB=");
+	lcd_send_string(buffer);
+	lcd_send_cmd(0x9b);
+	sprintf(buffer,"00:00:00 ");
+	lcd_send_string(buffer);
+	lcd_send_cmd(0xa4);
+	sprintf(buffer,"Lap%d",lapB);
+	lcd_send_string(buffer);
+	//TrackC
+	lcd_send_cmd(0xd4);
+	sprintf(buffer,"TrackC=");
+	lcd_send_string(buffer);
+	lcd_send_cmd(0xdb);
+	sprintf(buffer,"00:00:00 ");
+	lcd_send_string(buffer);
+	lcd_send_cmd(0xe4);
+	sprintf(buffer,"Lap%d",lapC);
+	lcd_send_string(buffer);
+}
+
 void DearLCD(void)
 {
 	//LAP TIME
 	lcd_send_cmd(0x80);
-	sprintf(buffer," [Lap Time] %d%d:%d%d:%d%d",(min/10),(min%10),(sec/10),(sec%10),(milisec/10),(milisec%10));
+	//sprintf(buffer," [Lap Time] %d%d:%d%d:%d%d",(min/10),(min%10),(sec/10),(sec%10),(milisec/10),(milisec%10));
+	sprintf(buffer," [Lap Time] ");
+	lcd_send_string(buffer);
+
+	lcd_send_cmd(0x8c);
+	sprintf(buffer,"%d",min);
+	lcd_send_string(buffer);
+	lcd_send_cmd(0x8e);
+	sprintf(buffer,":");
+	lcd_send_string(buffer);
+	lcd_send_cmd(0x8f);
+	sprintf(buffer,"%d",sec);
+	lcd_send_string(buffer);
+	lcd_send_cmd(0x91);
+	sprintf(buffer,":");
+	lcd_send_string(buffer);
+	lcd_send_cmd(0x92);
+	sprintf(buffer,"%d",milisec);
 	lcd_send_string(buffer);
 
 	//TrackA
 	if(lapA<totlap){
 		lcd_send_cmd(0xc0);
-		sprintf(buffer,"TrackA=%d%d:%d%d:%d%d Lap%d",(min1/10),(min1%10),(sec1/10),(sec1%10),(milisec1/10),(milisec1%10),(lapA));
+		//sprintf(buffer,"TrackA=%d%d:%d%d:%d%d Lap%d",(min1/10),(min1%10),(sec1/10),(sec1%10),(milisec1/10),(milisec1%10),(lapA));
+		//		sprintf(buffer,"TrackA=%d:%d:%d",min1,sec1,milisec1);
+		//		lcd_send_string(buffer);
+		//		lcd_send_cmd(0xd0);
+		//		sprintf(buffer,"Lap%d",lapA);
+		//		lcd_send_string(buffer);
+		sprintf(buffer,"TrackA=");
+		lcd_send_string(buffer);
+		lcd_send_cmd(0xc7);
+		sprintf(buffer,"%d",min1);
+		lcd_send_string(buffer);
+		lcd_send_cmd(0xc9);
+		sprintf(buffer,":");
+		lcd_send_string(buffer);
+		lcd_send_cmd(0xca);
+		sprintf(buffer,"%d",sec1);
+		lcd_send_string(buffer);
+		lcd_send_cmd(0xcc);
+		sprintf(buffer,":");
+		lcd_send_string(buffer);
+		lcd_send_cmd(0xcd);
+		sprintf(buffer,"%d",milisec1);
+		lcd_send_string(buffer);
+
+		lcd_send_cmd(0xd0);
+		sprintf(buffer,"Lap%d",lapA);
 		lcd_send_string(buffer);
 	}
 	else if(lapA==totlap){
@@ -314,7 +466,29 @@ void DearLCD(void)
 	//TrackB
 	if(lapB<totlap){
 		lcd_send_cmd(0x94);
-		sprintf(buffer,"TrackB=%d%d:%d%d:%d%d Lap%d",(min2/10),(min2%10),(sec2/10),(sec2%10),(milisec2/10),(milisec2%10),(lapB));
+		//sprintf(buffer,"TrackB=%d%d:%d%d:%d%d Lap%d",(min2/10),(min2%10),(sec2/10),(sec2%10),(milisec2/10),(milisec2%10),(lapB));
+		//		sprintf(buffer,"TrackB=%d:%d:%d",min2,sec2,milisec2);
+		//		lcd_send_string(buffer);
+		sprintf(buffer,"TrackB=");
+		lcd_send_string(buffer);
+		lcd_send_cmd(0x9b);
+		sprintf(buffer,"%d",min2);
+		lcd_send_string(buffer);
+		lcd_send_cmd(0x9d);
+		sprintf(buffer,":");
+		lcd_send_string(buffer);
+		lcd_send_cmd(0x9e);
+		sprintf(buffer,"%d",sec2);
+		lcd_send_string(buffer);
+		lcd_send_cmd(0xa0);
+		sprintf(buffer,":");
+		lcd_send_string(buffer);
+		lcd_send_cmd(0xa1);
+		sprintf(buffer,"%d",milisec2);
+		lcd_send_string(buffer);
+
+		lcd_send_cmd(0xa4);
+		sprintf(buffer,"Lap%d",lapB);
 		lcd_send_string(buffer);
 	}
 	else if(lapB==totlap){
@@ -325,7 +499,29 @@ void DearLCD(void)
 	//TrackC
 	if(lapC<totlap){
 		lcd_send_cmd(0xd4);
-		sprintf(buffer,"TrackC=%d%d:%d%d:%d%d Lap%d",(min3/10),(min3%10),(sec3/10),(sec3%10),(milisec2/10),(milisec2%10),(lapC));
+		//sprintf(buffer,"TrackC=%d%d:%d%d:%d%d Lap%d",(min3/10),(min3%10),(sec3/10),(sec3%10),(milisec2/10),(milisec2%10),(lapC));
+//		sprintf(buffer,"TrackC=%d:%d:%d",min3,sec3,milisec3);
+//		lcd_send_string(buffer);
+		sprintf(buffer,"TrackC=");
+		lcd_send_string(buffer);
+		lcd_send_cmd(0xdb);
+		sprintf(buffer,"%d",min3);
+		lcd_send_string(buffer);
+		lcd_send_cmd(0xdd);
+		sprintf(buffer,":");
+		lcd_send_string(buffer);
+		lcd_send_cmd(0xde);
+		sprintf(buffer,"%d",sec3);
+		lcd_send_string(buffer);
+		lcd_send_cmd(0xe0);
+		sprintf(buffer,":");
+		lcd_send_string(buffer);
+		lcd_send_cmd(0xe1);
+		sprintf(buffer,"%d",milisec3);
+		lcd_send_string(buffer);
+
+		lcd_send_cmd(0xe4);
+		sprintf(buffer,"Lap%d",lapC);
 		lcd_send_string(buffer);
 	}
 	else if(lapC==totlap){
@@ -340,9 +536,13 @@ void DearLCD(void)
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
+	//if(htim->Instance!=TIM2 && htim->Instance!=TIM4){
+	LCDAwal();
+	//}
+
 	if(htim->Instance==TIM2){
 		milisec++;
-		if(milisec>100){
+		if(milisec>99){
 			sec++;
 			milisec=0;
 		}

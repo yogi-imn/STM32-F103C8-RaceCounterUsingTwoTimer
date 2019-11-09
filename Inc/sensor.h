@@ -14,6 +14,7 @@ void Sensor1(void);
 void Sensor2(void);
 void Sensor3(void);
 void DearLCD(void);
+void LCDAwal(void);
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim);
 
 #endif /* SENSOR_H_ */
