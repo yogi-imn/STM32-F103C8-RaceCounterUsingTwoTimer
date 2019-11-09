@@ -13,14 +13,19 @@
 #include "stdio.h"
 
 unsigned int milisec=0,sec=0,min=0;
-//uint2_t milisec=0,sec=0,min=0;
-char buffer[21],buffertimer[10],buffs[13];
+char buffer[21],buffs[13];
 unsigned int runstop=0;
 unsigned int lapA=0,lapB=0,lapC=0,totlap=5;
 
-unsigned int milisec1,sec1,min1,miliseclast1=0,seclast1=0,minlast1=0;
-unsigned int milisec2,sec2,min2,miliseclast2=0,seclast2=0,minlast2=0;
-unsigned int milisec3,sec3,min3,miliseclast3=0,seclast3=0,minlast3=0;
+unsigned int milisecA,secA,minA;
+unsigned int milisecAB=0,secAB=0,minAB=0;
+unsigned int milisecAC=0,secAC=0,minAC=0;
+unsigned int milisecB,secB,minB;
+unsigned int milisecBA=0,secBA=0,minBA=0;
+unsigned int milisecBC=0,secBC=0,minBC=0;
+unsigned int milisecC,secC,minC;
+unsigned int milisecCA=0,secCA=0,minCA=0;
+unsigned int milisecCB=0,secCB=0,minCB=0;
 
 unsigned char bouncing	=0xFF;
 unsigned char bouncing2	=0xFF;
@@ -29,7 +34,7 @@ unsigned char bouncing4	=0xFF;
 unsigned char bouncing5	=0xFF;
 
 uint32_t Timeout_loop 	= 0;
-uint32_t Timeout_value 	= 400;
+uint32_t Timeout_value 	= 600;
 uint32_t Timeout_loop2 	= 0;
 uint32_t Timeout_value2 = 400;
 uint32_t Timeout_loop3 	= 0;
@@ -53,8 +58,7 @@ void PBOn(void)
 			HAL_GPIO_WritePin(LED2_GPIO_Port,LED2_Pin,GPIO_PIN_SET);
 
 			HAL_GPIO_TogglePin(LED3_GPIO_Port,LED3_Pin);
-			HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_Pin,GPIO_PIN_SET);
-			HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_Pin,GPIO_PIN_RESET);
+			HAL_GPIO_TogglePin(Buzzer_GPIO_Port,Buzzer_Pin);
 
 			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rPBOn Error: 0x01",18,10);
 		}
@@ -96,7 +100,6 @@ void PBReset(void)
 
 			HAL_GPIO_TogglePin(Buzzer_GPIO_Port,Buzzer_Pin);
 			HAL_GPIO_TogglePin(LED2_GPIO_Port,LED2_Pin);
-			HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_Pin,GPIO_PIN_RESET);
 
 			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rPBReset Error: 0x02",21,10);
 		}
@@ -116,59 +119,12 @@ void PBReset(void)
 		HAL_TIM_Base_Stop_IT(&htim2);
 
 		milisec=0;	sec=0;	min=0;	runstop=0;
-		milisec1=0;	sec1=0;	min1=0;
-		milisec2=0;	sec2=0;	min2=0;
-		milisec3=0;	sec3=0;	min3=0;
+		milisecA=0;	secA=0;	minA=0;
+		milisecB=0;	secB=0;	minB=0;
+		milisecC=0;	secC=0;	minC=0;
 		lapA=0;	lapB=0;	lapC=0;
 
-		lcd_send_cmd(0x80);
-		sprintf(buffer," [Lap Time] ");
-		lcd_send_string(buffer);
-		lcd_send_cmd(0x8c);
-		sprintf(buffer,"00");
-		lcd_send_string(buffer);
-		lcd_send_cmd(0x8e);
-		sprintf(buffer,":");
-		lcd_send_string(buffer);
-		lcd_send_cmd(0x8f);
-		sprintf(buffer,"00");
-		lcd_send_string(buffer);
-		lcd_send_cmd(0x91);
-		sprintf(buffer,":");
-		lcd_send_string(buffer);
-		lcd_send_cmd(0x92);
-		sprintf(buffer,"00");
-		lcd_send_string(buffer);
-		//TrackA
-		lcd_send_cmd(0xc0);
-		sprintf(buffer,"TrackA=");
-		lcd_send_string(buffer);
-		lcd_send_cmd(0xc7);
-		sprintf(buffer,"00:00:00 ");
-		lcd_send_string(buffer);
-		lcd_send_cmd(0xd0);
-		sprintf(buffer,"Lap%d",lapA);
-		lcd_send_string(buffer);
-		//TrackB
-		lcd_send_cmd(0x94);
-		sprintf(buffer,"TrackB=");
-		lcd_send_string(buffer);
-		lcd_send_cmd(0x9b);
-		sprintf(buffer,"00:00:00 ");
-		lcd_send_string(buffer);
-		lcd_send_cmd(0xa4);
-		sprintf(buffer,"Lap%d",lapB);
-		lcd_send_string(buffer);
-		//TrackC
-		lcd_send_cmd(0xd4);
-		sprintf(buffer,"TrackC=");
-		lcd_send_string(buffer);
-		lcd_send_cmd(0xdb);
-		sprintf(buffer,"00:00:00 ");
-		lcd_send_string(buffer);
-		lcd_send_cmd(0xe4);
-		sprintf(buffer,"Lap%d",lapC);
-		lcd_send_string(buffer);
+		LCDAwal();
 	}
 }
 
@@ -176,7 +132,6 @@ void Sensor1(void)
 {
 	if(HAL_GPIO_ReadPin(Sensor1_GPIO_Port,Sensor1_Pin)== GPIO_PIN_RESET && (Timeout_loop3++<=Timeout_value3)){
 		bouncing3=(bouncing3<<1);
-		///
 	}
 
 	else if(HAL_GPIO_ReadPin(Sensor1_GPIO_Port,Sensor1_Pin)== GPIO_PIN_RESET && (Timeout_loop3++>Timeout_value3)){
@@ -188,7 +143,6 @@ void Sensor1(void)
 			HAL_GPIO_TogglePin(Buzzer_GPIO_Port,Buzzer_Pin);
 			HAL_GPIO_TogglePin(LED3_GPIO_Port,LED3_Pin);
 			HAL_GPIO_TogglePin(LED2_GPIO_Port,LED2_Pin);
-			HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_Pin,GPIO_PIN_RESET);
 
 			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rSensor1 Error: 0x03",21,10);
 		}
@@ -204,25 +158,28 @@ void Sensor1(void)
 	}
 
 	if (bouncing3==0xFE){
+		HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_Pin,GPIO_PIN_SET);
+		milisecA=milisec;
+		//milisecA=milisec-milisecAB;
+		milisecAB=milisecA-milisecB;
+		milisecAC=milisecA-milisecC;
 
-		milisec1=milisec;
-		//milisec1=milisec-miliseclast1;
-		miliseclast1=milisec;
+		secA=sec;
+		//secA=sec-secAB;
+		secAB=secA-secB;
+		secAC=secA-secC;
 
-		sec1=sec;
-		//sec1=sec-seclast1;
-		seclast1=sec;
-
-		min1=min;
-		//min1=min-minlast1;
-		minlast1=min;
+		minA=min;
+		//minA=min-minAB;
+		minAB=minA-minB;
+		minAC=minA-minC;
 
 		if(runstop==1)	lapA++;
 		else 			lapA=0;
 
 		if(lapA<5){
-			//sprintf(buffs,"%d = %d:%d:%d",lapA,min1,sec1,milisec1);
-			sprintf(buffs,"%d = %d%d:%d%d:%d%d",lapA,(min1/10),(min1%10),(sec1/10),(sec1%10),(milisec1/10),(milisec1%10));
+			//sprintf(buffs,"%d = %d:%d:%d",lapA,minA,secA,milisecA);
+			sprintf(buffs,"%d = %d%d:%d%d:%d%d",lapA,(minA/10),(minA%10),(secA/10),(secA%10),(milisecA/10),(milisecA%10));
 			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rTrack A Lap:",14,10);
 			HAL_UART_Transmit(&huart1,(uint8_t*)buffs,sizeof(buffs),10);
 		}
@@ -248,7 +205,6 @@ void Sensor2(void)
 
 			HAL_GPIO_TogglePin(Buzzer_GPIO_Port,Buzzer_Pin);
 			HAL_GPIO_TogglePin(LED1_GPIO_Port,LED1_Pin);
-			HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_Pin,GPIO_PIN_RESET);
 
 			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rSensor2 Error: 0x04",21,10);
 		}
@@ -264,24 +220,27 @@ void Sensor2(void)
 	}
 
 	if (bouncing4==0xFE){
+		HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_Pin,GPIO_PIN_SET);
+		milisecB=milisec;
+		//milisecB=milisec-milisecBA;
+		milisecBA=milisecB-milisecA;
+		milisecBC=milisecB-milisecC;
 
-		milisec2=milisec;
-		//milisec2=milisec-miliseclast2;
-		miliseclast2=milisec;
+		secB=sec;
+		//secB=sec-secBA;
+		secBA=secB-secA;
+		secBC=secB-secC;
 
-		sec2=sec;
-		//sec2=sec-seclast2;
-		seclast2=sec;
-
-		min2=min;
-		//min2=min-minlast2;
-		minlast2=min;
+		minB=min;
+		//minB=min-minBA;
+		minBA=minB-minA;
+		minBC=minB-minC;
 
 		if(runstop==1)	lapB++;
 		else 			lapB=0;
 
 		if(lapB<5){
-			sprintf(buffs,"%d = %d%d:%d%d:%d%d",lapB,(min2/10),(min2%10),(sec2/10),(sec2%10),(milisec2/10),(milisec2%10));
+			sprintf(buffs,"%d = %d%d:%d%d:%d%d",lapB,(minB/10),(minB%10),(secB/10),(secB%10),(milisecB/10),(milisecB%10));
 			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rTrack B Lap:",14,10);
 			HAL_UART_Transmit(&huart1,(uint8_t*)buffs,sizeof(buffs),10);
 		}
@@ -307,7 +266,6 @@ void Sensor3(void)
 			HAL_GPIO_TogglePin(Buzzer_GPIO_Port,Buzzer_Pin);
 			HAL_GPIO_TogglePin(LED1_GPIO_Port,LED1_Pin);
 			HAL_GPIO_TogglePin(LED3_GPIO_Port,LED3_Pin);
-			HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_Pin,GPIO_PIN_RESET);
 
 			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rSensor3 Error: 0x05",21,10);
 		}
@@ -323,24 +281,24 @@ void Sensor3(void)
 	}
 
 	if (bouncing5==0xFE){
+		HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_Pin,GPIO_PIN_SET);
+		milisecC=milisec;
+		//milisecC=milisec-milisecCA;
+		milisecCA=milisec;
 
-		milisec3=milisec;
-		//milisec3=milisec-miliseclast3;
-		miliseclast3=milisec;
+		secC=sec;
+		//secC=sec-secCA;
+		secCA=sec;
 
-		sec3=sec;
-		//sec3=sec-seclast3;
-		seclast3=sec;
-
-		min3=min;
-		//min3=min-minlast3;
-		minlast3=min;
+		minC=min;
+		//minC=min-minCA;
+		minCA=min;
 
 		if(runstop==1)	lapC++;
 		else 			lapC=0;
 
 		if(lapC<5){
-			sprintf(buffs,"%d = %d%d:%d%d:%d%d",lapC,(min3/10),(min3%10),(sec3/10),(sec3%10),(milisec3/10),(milisec3%10));
+			sprintf(buffs,"%d = %d%d:%d%d:%d%d",lapC,(minC/10),(minC%10),(secC/10),(secC%10),(milisecC/10),(milisecC%10));
 			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rTrack C Lap:",14,10);
 			HAL_UART_Transmit(&huart1,(uint8_t*)buffs,sizeof(buffs),10);
 		}
@@ -357,26 +315,26 @@ void LCDAwal(void)
 	sprintf(buffer," [Lap Time] ");
 	lcd_send_string(buffer);
 	lcd_send_cmd(0x8c);
-	sprintf(buffer,"00");
+	sprintf(buffer,"  ");
 	lcd_send_string(buffer);
 	lcd_send_cmd(0x8e);
 	sprintf(buffer,":");
 	lcd_send_string(buffer);
 	lcd_send_cmd(0x8f);
-	sprintf(buffer,"00");
+	sprintf(buffer,"  ");
 	lcd_send_string(buffer);
 	lcd_send_cmd(0x91);
 	sprintf(buffer,":");
 	lcd_send_string(buffer);
 	lcd_send_cmd(0x92);
-	sprintf(buffer,"00");
+	sprintf(buffer,"  ");
 	lcd_send_string(buffer);
 	//TrackA
 	lcd_send_cmd(0xc0);
 	sprintf(buffer,"TrackA=");
 	lcd_send_string(buffer);
 	lcd_send_cmd(0xc7);
-	sprintf(buffer,"00:00:00 ");
+	sprintf(buffer,"  :  :   ");
 	lcd_send_string(buffer);
 	lcd_send_cmd(0xd0);
 	sprintf(buffer,"Lap%d",lapA);
@@ -386,7 +344,7 @@ void LCDAwal(void)
 	sprintf(buffer,"TrackB=");
 	lcd_send_string(buffer);
 	lcd_send_cmd(0x9b);
-	sprintf(buffer,"00:00:00 ");
+	sprintf(buffer,"  :  :   ");
 	lcd_send_string(buffer);
 	lcd_send_cmd(0xa4);
 	sprintf(buffer,"Lap%d",lapB);
@@ -396,7 +354,7 @@ void LCDAwal(void)
 	sprintf(buffer,"TrackC=");
 	lcd_send_string(buffer);
 	lcd_send_cmd(0xdb);
-	sprintf(buffer,"00:00:00 ");
+	sprintf(buffer,"  :  :   ");
 	lcd_send_string(buffer);
 	lcd_send_cmd(0xe4);
 	sprintf(buffer,"Lap%d",lapC);
@@ -430,8 +388,8 @@ void DearLCD(void)
 	//TrackA
 	if(lapA<totlap){
 		lcd_send_cmd(0xc0);
-		//sprintf(buffer,"TrackA=%d%d:%d%d:%d%d Lap%d",(min1/10),(min1%10),(sec1/10),(sec1%10),(milisec1/10),(milisec1%10),(lapA));
-		//		sprintf(buffer,"TrackA=%d:%d:%d",min1,sec1,milisec1);
+		//sprintf(buffer,"TrackA=%d%d:%d%d:%d%d Lap%d",(minA/10),(minA%10),(secA/10),(secA%10),(milisecA/10),(milisecA%10),(lapA));
+		//		sprintf(buffer,"TrackA=%d:%d:%d",minA,secA,milisecA);
 		//		lcd_send_string(buffer);
 		//		lcd_send_cmd(0xd0);
 		//		sprintf(buffer,"Lap%d",lapA);
@@ -439,19 +397,19 @@ void DearLCD(void)
 		sprintf(buffer,"TrackA=");
 		lcd_send_string(buffer);
 		lcd_send_cmd(0xc7);
-		sprintf(buffer,"%d",min1);
+		sprintf(buffer,"%d",minA);
 		lcd_send_string(buffer);
 		lcd_send_cmd(0xc9);
 		sprintf(buffer,":");
 		lcd_send_string(buffer);
 		lcd_send_cmd(0xca);
-		sprintf(buffer,"%d",sec1);
+		sprintf(buffer,"%d",secA);
 		lcd_send_string(buffer);
 		lcd_send_cmd(0xcc);
 		sprintf(buffer,":");
 		lcd_send_string(buffer);
 		lcd_send_cmd(0xcd);
-		sprintf(buffer,"%d",milisec1);
+		sprintf(buffer,"%d",milisecA);
 		lcd_send_string(buffer);
 
 		lcd_send_cmd(0xd0);
@@ -466,25 +424,25 @@ void DearLCD(void)
 	//TrackB
 	if(lapB<totlap){
 		lcd_send_cmd(0x94);
-		//sprintf(buffer,"TrackB=%d%d:%d%d:%d%d Lap%d",(min2/10),(min2%10),(sec2/10),(sec2%10),(milisec2/10),(milisec2%10),(lapB));
-		//		sprintf(buffer,"TrackB=%d:%d:%d",min2,sec2,milisec2);
+		//sprintf(buffer,"TrackB=%d%d:%d%d:%d%d Lap%d",(minB/10),(minB%10),(secB/10),(secB%10),(milisecB/10),(milisecB%10),(lapB));
+		//		sprintf(buffer,"TrackB=%d:%d:%d",minB,secB,milisecB);
 		//		lcd_send_string(buffer);
 		sprintf(buffer,"TrackB=");
 		lcd_send_string(buffer);
 		lcd_send_cmd(0x9b);
-		sprintf(buffer,"%d",min2);
+		sprintf(buffer,"%d",minB);
 		lcd_send_string(buffer);
 		lcd_send_cmd(0x9d);
 		sprintf(buffer,":");
 		lcd_send_string(buffer);
 		lcd_send_cmd(0x9e);
-		sprintf(buffer,"%d",sec2);
+		sprintf(buffer,"%d",secB);
 		lcd_send_string(buffer);
 		lcd_send_cmd(0xa0);
 		sprintf(buffer,":");
 		lcd_send_string(buffer);
 		lcd_send_cmd(0xa1);
-		sprintf(buffer,"%d",milisec2);
+		sprintf(buffer,"%d",milisecB);
 		lcd_send_string(buffer);
 
 		lcd_send_cmd(0xa4);
@@ -499,25 +457,25 @@ void DearLCD(void)
 	//TrackC
 	if(lapC<totlap){
 		lcd_send_cmd(0xd4);
-		//sprintf(buffer,"TrackC=%d%d:%d%d:%d%d Lap%d",(min3/10),(min3%10),(sec3/10),(sec3%10),(milisec2/10),(milisec2%10),(lapC));
-//		sprintf(buffer,"TrackC=%d:%d:%d",min3,sec3,milisec3);
+		//sprintf(buffer,"TrackC=%d%d:%d%d:%d%d Lap%d",(minC/10),(minC%10),(secC/10),(secC%10),(milisecB/10),(milisecB%10),(lapC));
+//		sprintf(buffer,"TrackC=%d:%d:%d",minC,secC,milisecC);
 //		lcd_send_string(buffer);
 		sprintf(buffer,"TrackC=");
 		lcd_send_string(buffer);
 		lcd_send_cmd(0xdb);
-		sprintf(buffer,"%d",min3);
+		sprintf(buffer,"%d",minC);
 		lcd_send_string(buffer);
 		lcd_send_cmd(0xdd);
 		sprintf(buffer,":");
 		lcd_send_string(buffer);
 		lcd_send_cmd(0xde);
-		sprintf(buffer,"%d",sec3);
+		sprintf(buffer,"%d",secC);
 		lcd_send_string(buffer);
 		lcd_send_cmd(0xe0);
 		sprintf(buffer,":");
 		lcd_send_string(buffer);
 		lcd_send_cmd(0xe1);
-		sprintf(buffer,"%d",milisec3);
+		sprintf(buffer,"%d",milisecC);
 		lcd_send_string(buffer);
 
 		lcd_send_cmd(0xe4);
@@ -536,10 +494,6 @@ void DearLCD(void)
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-	//if(htim->Instance!=TIM2 && htim->Instance!=TIM4){
-	LCDAwal();
-	//}
-
 	if(htim->Instance==TIM2){
 		milisec++;
 		if(milisec>99){

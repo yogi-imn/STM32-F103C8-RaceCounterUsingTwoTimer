@@ -29,11 +29,13 @@
 int main(void)
 {
   /* Initialize all configured peripherals */
+
   System_Init();
   MX_TIM4_Init(2);
 
   HAL_TIM_Base_Start_IT(&htim4);
   lcd_init();
+  LCDAwal();
 
   while (1)
   {
