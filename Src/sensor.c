@@ -125,6 +125,10 @@ void PBReset(void)
 		lapA=0;	lapB=0;	lapC=0;
 
 		LCDAwal();
+		HAL_GPIO_WritePin(LED1_GPIO_Port,LED1_Pin,GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(LED2_GPIO_Port,LED2_Pin,GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(LED3_GPIO_Port,LED2_Pin,GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_Pin,GPIO_PIN_RESET);
 	}
 }
 
@@ -179,13 +183,29 @@ void Sensor1(void)
 
 		if(lapA<5){
 			//sprintf(buffs,"%d = %d:%d:%d",lapA,minA,secA,milisecA);
-			sprintf(buffs,"%d = %d%d:%d%d:%d%d",lapA,(minA/10),(minA%10),(secA/10),(secA%10),(milisecA/10),(milisecA%10));
 			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rTrack A Lap:",14,10);
+			sprintf(buffs,"%d = %d%d:%d%d:%d%d",lapA,(minA/10),(minA%10),(secA/10),(secA%10),(milisecA/10),(milisecA%10));
+			HAL_UART_Transmit(&huart1,(uint8_t*)buffs,sizeof(buffs),10);
+			//Selisih A dan B
+			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rSelisih mobil A dengan B:",27,10);
+			sprintf(buffs,"%d%d:%d%d:%d%d",(minAB/10),(minAB%10),(secAB/10),(secAB%10),(milisecAB/10),(milisecAB%10));
+			HAL_UART_Transmit(&huart1,(uint8_t*)buffs,sizeof(buffs),10);
+			//Selisih A dan C
+			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rSelisih mobil A dengan C:",27,10);
+			sprintf(buffs,"%d%d:%d%d:%d%d",(minAC/10),(minAC%10),(secAC/10),(secAC%10),(milisecAC/10),(milisecAC%10));
 			HAL_UART_Transmit(&huart1,(uint8_t*)buffs,sizeof(buffs),10);
 		}
 		else{
 			lapA=5;
 			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rTrack A = FINISH",18,10);
+			//Selisih A dan B
+			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rSelisih mobil A dengan B:",27,10);
+			sprintf(buffs,"%d%d:%d%d:%d%d",(minAB/10),(minAB%10),(secAB/10),(secAB%10),(milisecAB/10),(milisecAB%10));
+			HAL_UART_Transmit(&huart1,(uint8_t*)buffs,sizeof(buffs),10);
+			//Selisih A dan C
+			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rSelisih mobil A dengan C:",27,10);
+			sprintf(buffs,"%d%d:%d%d:%d%d",(minAC/10),(minAC%10),(secAC/10),(secAC%10),(milisecAC/10),(milisecAC%10));
+			HAL_UART_Transmit(&huart1,(uint8_t*)buffs,sizeof(buffs),10);
 		}
 	}
 }
@@ -240,13 +260,29 @@ void Sensor2(void)
 		else 			lapB=0;
 
 		if(lapB<5){
-			sprintf(buffs,"%d = %d%d:%d%d:%d%d",lapB,(minB/10),(minB%10),(secB/10),(secB%10),(milisecB/10),(milisecB%10));
 			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rTrack B Lap:",14,10);
+			sprintf(buffs,"%d = %d%d:%d%d:%d%d",lapB,(minB/10),(minB%10),(secB/10),(secB%10),(milisecB/10),(milisecB%10));
+			HAL_UART_Transmit(&huart1,(uint8_t*)buffs,sizeof(buffs),10);
+			//Selisih B dan A
+			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rSelisih mobil B dengan A:",27,10);
+			sprintf(buffs,"%d%d:%d%d:%d%d",(minBA/10),(minBA%10),(secBA/10),(secBA%10),(milisecBA/10),(milisecBA%10));
+			HAL_UART_Transmit(&huart1,(uint8_t*)buffs,sizeof(buffs),10);
+			//Selisih B dan C
+			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rSelisih mobil B dengan C:",27,10);
+			sprintf(buffs,"%d%d:%d%d:%d%d",(minBC/10),(minBC%10),(secBC/10),(secBC%10),(milisecBC/10),(milisecBC%10));
 			HAL_UART_Transmit(&huart1,(uint8_t*)buffs,sizeof(buffs),10);
 		}
 		else{
 			lapB=5;
 			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rTrack B = FINISH",18,10);
+			//Selisih B dan A
+			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rSelisih mobil B dengan A:",27,10);
+			sprintf(buffs,"%d%d:%d%d:%d%d",(minBA/10),(minBA%10),(secBA/10),(secBA%10),(milisecBA/10),(milisecBA%10));
+			HAL_UART_Transmit(&huart1,(uint8_t*)buffs,sizeof(buffs),10);
+			//Selisih B dan C
+			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rSelisih mobil B dengan C:",27,10);
+			sprintf(buffs,"%d%d:%d%d:%d%d",(minBC/10),(minBC%10),(secBC/10),(secBC%10),(milisecBC/10),(milisecBC%10));
+			HAL_UART_Transmit(&huart1,(uint8_t*)buffs,sizeof(buffs),10);
 		}
 	}
 }
@@ -284,27 +320,46 @@ void Sensor3(void)
 		HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_Pin,GPIO_PIN_SET);
 		milisecC=milisec;
 		//milisecC=milisec-milisecCA;
-		milisecCA=milisec;
+		milisecCA=milisecC-milisecA;
+		milisecCB=milisecC-milisecB;
 
 		secC=sec;
 		//secC=sec-secCA;
-		secCA=sec;
+		secCA=secC-secA;
+		secCB=secC-secB;
 
 		minC=min;
 		//minC=min-minCA;
-		minCA=min;
+		minCA=minC-minA;
+		minCB=minC-minB;
 
 		if(runstop==1)	lapC++;
 		else 			lapC=0;
 
 		if(lapC<5){
-			sprintf(buffs,"%d = %d%d:%d%d:%d%d",lapC,(minC/10),(minC%10),(secC/10),(secC%10),(milisecC/10),(milisecC%10));
 			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rTrack C Lap:",14,10);
+			sprintf(buffs,"%d = %d%d:%d%d:%d%d",lapC,(minC/10),(minC%10),(secC/10),(secC%10),(milisecC/10),(milisecC%10));
+			HAL_UART_Transmit(&huart1,(uint8_t*)buffs,sizeof(buffs),10);
+			//Selisih C dan A
+			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rSelisih mobil C dengan A:",27,10);
+			sprintf(buffs,"%d%d:%d%d:%d%d",(minCA/10),(minCA%10),(secCA/10),(secCA%10),(milisecCA/10),(milisecCA%10));
+			HAL_UART_Transmit(&huart1,(uint8_t*)buffs,sizeof(buffs),10);
+			//Selisih C dan B
+			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rSelisih mobil C dengan B:",27,10);
+			sprintf(buffs,"%d%d:%d%d:%d%d",(minCB/10),(minCB%10),(secCB/10),(secCB%10),(milisecCB/10),(milisecCB%10));
 			HAL_UART_Transmit(&huart1,(uint8_t*)buffs,sizeof(buffs),10);
 		}
 		else{
 			lapC=5;
 			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rTrack C = FINISH",18,10);
+			//Selisih C dan A
+			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rSelisih mobil C dengan A:",27,10);
+			sprintf(buffs,"%d%d:%d%d:%d%d",(minCA/10),(minCA%10),(secCA/10),(secCA%10),(milisecCA/10),(milisecCA%10));
+			HAL_UART_Transmit(&huart1,(uint8_t*)buffs,sizeof(buffs),10);
+			//Selisih C dan B
+			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rSelisih mobil C dengan B:",27,10);
+			sprintf(buffs,"%d%d:%d%d:%d%d",(minCB/10),(minCB%10),(secCB/10),(secCB%10),(milisecCB/10),(milisecCB%10));
+			HAL_UART_Transmit(&huart1,(uint8_t*)buffs,sizeof(buffs),10);
 		}
 	}
 }
