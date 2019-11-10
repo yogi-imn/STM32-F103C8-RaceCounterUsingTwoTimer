@@ -11,21 +11,28 @@
 #include "device.h"
 #include "sensor.h"
 #include "stdio.h"
+#include "stdlib.h"
 
 unsigned int milisec=0,sec=0,min=0;
-char buffer[21],buffs[13];
+char buffer[21],buffs[13],buffg[6];
 unsigned int runstop=0;
 unsigned int lapA=0,lapB=0,lapC=0,totlap=5;
 
-unsigned int milisecA,secA,minA;
+unsigned int milisecA=0,secA=0,minA=0;
 unsigned int milisecAB=0,secAB=0,minAB=0;
+unsigned int selisihmsAB=0,selisihsAB=0,selisihmAB=0;
 unsigned int milisecAC=0,secAC=0,minAC=0;
-unsigned int milisecB,secB,minB;
+unsigned int selisihmsAC=0,selisihsAC=0,selisihmAC=0;
+unsigned int milisecB=0,secB=0,minB=0;
 unsigned int milisecBA=0,secBA=0,minBA=0;
+unsigned int selisihmsBA=0,selisihsBA=0,selisihmBA=0;
 unsigned int milisecBC=0,secBC=0,minBC=0;
-unsigned int milisecC,secC,minC;
+unsigned int selisihmsBC=0,selisihsBC=0,selisihmBC=0;
+unsigned int milisecC=0,secC=0,minC=0;
 unsigned int milisecCA=0,secCA=0,minCA=0;
+unsigned int selisihmsCA=0,selisihsCA=0,selisihmCA=0;
 unsigned int milisecCB=0,secCB=0,minCB=0;
+unsigned int selisihmsCB=0,selisihsCB=0,selisihmCB=0;
 
 unsigned char bouncing	=0xFF;
 unsigned char bouncing2	=0xFF;
@@ -34,9 +41,9 @@ unsigned char bouncing4	=0xFF;
 unsigned char bouncing5	=0xFF;
 
 uint32_t Timeout_loop 	= 0;
-uint32_t Timeout_value 	= 600;
+uint32_t Timeout_value 	= 200;
 uint32_t Timeout_loop2 	= 0;
-uint32_t Timeout_value2 = 400;
+uint32_t Timeout_value2 = 200;
 uint32_t Timeout_loop3 	= 0;
 uint32_t Timeout_value3 = 400;
 uint32_t Timeout_loop4 	= 0;
@@ -122,7 +129,7 @@ void PBReset(void)
 		milisecA=0;	secA=0;	minA=0;
 		milisecB=0;	secB=0;	minB=0;
 		milisecC=0;	secC=0;	minC=0;
-		lapA=0;	lapB=0;	lapC=0;
+		lapA=0;		lapB=0;	lapC=0;
 
 		LCDAwal();
 		HAL_GPIO_WritePin(LED1_GPIO_Port,LED1_Pin,GPIO_PIN_RESET);
@@ -162,50 +169,89 @@ void Sensor1(void)
 	}
 
 	if (bouncing3==0xFE){
-		HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_Pin,GPIO_PIN_SET);
-		milisecA=milisec;
-		//milisecA=milisec-milisecAB;
-		milisecAB=milisecA-milisecB;
-		milisecAC=milisecA-milisecC;
-
-		secA=sec;
-		//secA=sec-secAB;
-		secAB=secA-secB;
-		secAC=secA-secC;
-
 		minA=min;
-		//minA=min-minAB;
 		minAB=minA-minB;
 		minAC=minA-minC;
+
+		secA=sec;
+		selisihsAB=secA-secB;
+		selisihsAC=secA-secC;
+//		secAB=secA-secB;
+//		secAC=secA-secC;
+
+		milisecA=milisec;
+		selisihmsAB=milisecA-milisecB;
+		selisihmsAC=milisecA-milisecC;
+
+		if(selisihsAB>=0){
+			secAB=abs(selisihsAB);
+		}else{//(selisihsAB<0)
+			if(minAB != 0){
+				secAB=100-secB+secA;
+				minAB=minAB-1;
+			}else if(minAB == 0){
+				secAB=abs(selisihsAB);
+			}
+		}
+
+		if(selisihsAC>=0){
+			secAC=abs(selisihsAC);
+		}else{
+			if(minAC != 0){
+				secAC=100-secC+secA;
+				minAC=minAC-1;
+			}else if(minAC == 0){
+				secAC=abs(selisihsAC);
+			}
+		}
+
+		if(selisihmsAB>=0){
+			milisecAB=abs(selisihmsAB);
+		}else{
+			if(secAB != 0){
+				milisecAB=100-milisecB+milisecA;
+				secAB=secAB-1;
+			}else if(secAB == 0){
+				milisecAB=abs(selisihmsAB);
+			}
+		}
+
+		if(selisihmsAC>=0){
+			milisecAC=abs(selisihmsAC);
+		}else{
+			if(secAC != 0){
+				milisecAC=100-milisecC+milisecA;
+				secAC=secAC-1;
+			}else if(secAC == 0){
+				milisecAC=abs(selisihmsAC);
+			}
+		}
 
 		if(runstop==1)	lapA++;
 		else 			lapA=0;
 
 		if(lapA<5){
+			HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_Pin,GPIO_PIN_SET);
 			//sprintf(buffs,"%d = %d:%d:%d",lapA,minA,secA,milisecA);
 			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rTrack A Lap:",14,10);
 			sprintf(buffs,"%d = %d%d:%d%d:%d%d",lapA,(minA/10),(minA%10),(secA/10),(secA%10),(milisecA/10),(milisecA%10));
 			HAL_UART_Transmit(&huart1,(uint8_t*)buffs,sizeof(buffs),10);
-			//Selisih A dan B
-			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rSelisih mobil A dengan B:",27,10);
-			sprintf(buffs,"%d%d:%d%d:%d%d",(minAB/10),(minAB%10),(secAB/10),(secAB%10),(milisecAB/10),(milisecAB%10));
-			HAL_UART_Transmit(&huart1,(uint8_t*)buffs,sizeof(buffs),10);
-			//Selisih A dan C
-			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rSelisih mobil A dengan C:",27,10);
-			sprintf(buffs,"%d%d:%d%d:%d%d",(minAC/10),(minAC%10),(secAC/10),(secAC%10),(milisecAC/10),(milisecAC%10));
-			HAL_UART_Transmit(&huart1,(uint8_t*)buffs,sizeof(buffs),10);
+			HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_Pin,GPIO_PIN_RESET);
 		}
-		else{
-			lapA=5;
+		else if(lapA==5){
+			//lapA=5;
 			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rTrack A = FINISH",18,10);
+			//HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rTrack A Lap:",14,10);
+			sprintf(buffs," = %d%d:%d%d:%d%d",(minA/10),(minA%10),(secA/10),(secA%10),(milisecA/10),(milisecA%10));
+			HAL_UART_Transmit(&huart1,(uint8_t*)buffs,sizeof(buffs),10);
 			//Selisih A dan B
-			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rSelisih mobil A dengan B:",27,10);
-			sprintf(buffs,"%d%d:%d%d:%d%d",(minAB/10),(minAB%10),(secAB/10),(secAB%10),(milisecAB/10),(milisecAB%10));
-			HAL_UART_Transmit(&huart1,(uint8_t*)buffs,sizeof(buffs),10);
+			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rSelisih mobil A dengan B = ",27,10);
+			sprintf(buffg,"%d:%d:%d",minAB,secAB,milisecAB);
+			HAL_UART_Transmit(&huart1,(uint8_t*)buffg,sizeof(buffg),10);
 			//Selisih A dan C
-			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rSelisih mobil A dengan C:",27,10);
-			sprintf(buffs,"%d%d:%d%d:%d%d",(minAC/10),(minAC%10),(secAC/10),(secAC%10),(milisecAC/10),(milisecAC%10));
-			HAL_UART_Transmit(&huart1,(uint8_t*)buffs,sizeof(buffs),10);
+			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rSelisih mobil A dengan C = ",27,10);
+			sprintf(buffg,"%d:%d:%d",minAC,secAC,milisecAC);
+			HAL_UART_Transmit(&huart1,(uint8_t*)buffg,sizeof(buffs),10);
 		}
 	}
 }
@@ -240,7 +286,6 @@ void Sensor2(void)
 	}
 
 	if (bouncing4==0xFE){
-		HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_Pin,GPIO_PIN_SET);
 		milisecB=milisec;
 		//milisecB=milisec-milisecBA;
 		milisecBA=milisecB-milisecA;
@@ -260,29 +305,23 @@ void Sensor2(void)
 		else 			lapB=0;
 
 		if(lapB<5){
+			HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_Pin,GPIO_PIN_SET);
 			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rTrack B Lap:",14,10);
 			sprintf(buffs,"%d = %d%d:%d%d:%d%d",lapB,(minB/10),(minB%10),(secB/10),(secB%10),(milisecB/10),(milisecB%10));
 			HAL_UART_Transmit(&huart1,(uint8_t*)buffs,sizeof(buffs),10);
-			//Selisih B dan A
-			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rSelisih mobil B dengan A:",27,10);
-			sprintf(buffs,"%d%d:%d%d:%d%d",(minBA/10),(minBA%10),(secBA/10),(secBA%10),(milisecBA/10),(milisecBA%10));
-			HAL_UART_Transmit(&huart1,(uint8_t*)buffs,sizeof(buffs),10);
-			//Selisih B dan C
-			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rSelisih mobil B dengan C:",27,10);
-			sprintf(buffs,"%d%d:%d%d:%d%d",(minBC/10),(minBC%10),(secBC/10),(secBC%10),(milisecBC/10),(milisecBC%10));
-			HAL_UART_Transmit(&huart1,(uint8_t*)buffs,sizeof(buffs),10);
+			HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_Pin,GPIO_PIN_RESET);
 		}
-		else{
-			lapB=5;
+		else if (lapB==5){
+			//lapB=5;
 			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rTrack B = FINISH",18,10);
 			//Selisih B dan A
-			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rSelisih mobil B dengan A:",27,10);
-			sprintf(buffs,"%d%d:%d%d:%d%d",(minBA/10),(minBA%10),(secBA/10),(secBA%10),(milisecBA/10),(milisecBA%10));
-			HAL_UART_Transmit(&huart1,(uint8_t*)buffs,sizeof(buffs),10);
+			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rSelisih mobil B dengan A = ",27,10);
+			sprintf(buffg,"%d:%d:%d",minBA,secBA,milisecBA);
+			HAL_UART_Transmit(&huart1,(uint8_t*)buffg,sizeof(buffg),10);
 			//Selisih B dan C
-			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rSelisih mobil B dengan C:",27,10);
-			sprintf(buffs,"%d%d:%d%d:%d%d",(minBC/10),(minBC%10),(secBC/10),(secBC%10),(milisecBC/10),(milisecBC%10));
-			HAL_UART_Transmit(&huart1,(uint8_t*)buffs,sizeof(buffs),10);
+			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rSelisih mobil B dengan C = ",27,10);
+			sprintf(buffg,"%d:%d:%d",minBC,secBC,milisecBC);
+			HAL_UART_Transmit(&huart1,(uint8_t*)buffg,sizeof(buffg),10);
 		}
 	}
 }
@@ -317,7 +356,6 @@ void Sensor3(void)
 	}
 
 	if (bouncing5==0xFE){
-		HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_Pin,GPIO_PIN_SET);
 		milisecC=milisec;
 		//milisecC=milisec-milisecCA;
 		milisecCA=milisecC-milisecA;
@@ -337,29 +375,23 @@ void Sensor3(void)
 		else 			lapC=0;
 
 		if(lapC<5){
+			HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_Pin,GPIO_PIN_SET);
 			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rTrack C Lap:",14,10);
 			sprintf(buffs,"%d = %d%d:%d%d:%d%d",lapC,(minC/10),(minC%10),(secC/10),(secC%10),(milisecC/10),(milisecC%10));
 			HAL_UART_Transmit(&huart1,(uint8_t*)buffs,sizeof(buffs),10);
-			//Selisih C dan A
-			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rSelisih mobil C dengan A:",27,10);
-			sprintf(buffs,"%d%d:%d%d:%d%d",(minCA/10),(minCA%10),(secCA/10),(secCA%10),(milisecCA/10),(milisecCA%10));
-			HAL_UART_Transmit(&huart1,(uint8_t*)buffs,sizeof(buffs),10);
-			//Selisih C dan B
-			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rSelisih mobil C dengan B:",27,10);
-			sprintf(buffs,"%d%d:%d%d:%d%d",(minCB/10),(minCB%10),(secCB/10),(secCB%10),(milisecCB/10),(milisecCB%10));
-			HAL_UART_Transmit(&huart1,(uint8_t*)buffs,sizeof(buffs),10);
+			HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_Pin,GPIO_PIN_RESET);
 		}
-		else{
-			lapC=5;
+		else if (lapC==5){
+			//lapC=5;
 			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rTrack C = FINISH",18,10);
 			//Selisih C dan A
-			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rSelisih mobil C dengan A:",27,10);
-			sprintf(buffs,"%d%d:%d%d:%d%d",(minCA/10),(minCA%10),(secCA/10),(secCA%10),(milisecCA/10),(milisecCA%10));
-			HAL_UART_Transmit(&huart1,(uint8_t*)buffs,sizeof(buffs),10);
+			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rSelisih mobil C dengan A = ",27,10);
+			sprintf(buffg,"%d:%d:%d",minCA,secCA,milisecCA);
+			HAL_UART_Transmit(&huart1,(uint8_t*)buffg,sizeof(buffg),10);
 			//Selisih C dan B
-			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rSelisih mobil C dengan B:",27,10);
-			sprintf(buffs,"%d%d:%d%d:%d%d",(minCB/10),(minCB%10),(secCB/10),(secCB%10),(milisecCB/10),(milisecCB%10));
-			HAL_UART_Transmit(&huart1,(uint8_t*)buffs,sizeof(buffs),10);
+			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rSelisih mobil C dengan B = ",27,10);
+			sprintf(buffg,"%d:%d:%d",minCB,secCB,milisecCB);
+			HAL_UART_Transmit(&huart1,(uint8_t*)buffg,sizeof(buffg),10);
 		}
 	}
 }
