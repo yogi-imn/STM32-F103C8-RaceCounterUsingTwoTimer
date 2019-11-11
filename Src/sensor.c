@@ -259,7 +259,6 @@ void Sensor1(void)
 
 		if(lapA<5){
 			HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_Pin,GPIO_PIN_SET);
-			//sprintf(buffs,"%d = %d:%d:%d",lapA,minA,secA,milisecA);
 			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rTrack A Lap:",14,10);
 			sprintf(buffs,"%d = %d%d:%d%d:%d%d",lapA,(minAA/10),(minAA%10),(secAA/10),(secAA%10),(milisecAA/10),(milisecAA%10));
 			HAL_UART_Transmit(&huart1,(uint8_t*)buffs,sizeof(buffs),10);
@@ -268,9 +267,6 @@ void Sensor1(void)
 		else if(lapA==5){
 			//lapA=5;
 			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rTrack A = FINISH",18,10);
-			//HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rTrack A Lap:",14,10);
-			//sprintf(buffs," = %d%d:%d%d:%d%d",(minAA/10),(minAA%10),(secAA/10),(secAA%10),(milisecAA/10),(milisecAA%10));
-			//HAL_UART_Transmit(&huart1,(uint8_t*)buffs,sizeof(buffs),10);
 			//Selisih A dan B
 			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rSelisih mobil A dengan B = ",27,10);
 			sprintf(buffg,"%d:%d:%d",minAB,secAB,milisecAB);
@@ -333,7 +329,7 @@ void Sensor2(void)
 
 		if(selisihsBA>=0){
 			secBA=abs(selisihsBA);
-		}else{//(selisihsAB<0)
+		}else{
 			if(minBA != 0){
 				secBA=100-secA+secB;
 				minBA=minBA-1;
@@ -388,8 +384,6 @@ void Sensor2(void)
 		else if (lapB==5){
 			//lapB=5;
 			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rTrack B = FINISH",18,10);
-			//sprintf(buffs," = %d%d:%d%d:%d%d",(minB/10),(minB%10),(secB/10),(secB%10),(milisecB/10),(milisecB%10));
-			//HAL_UART_Transmit(&huart1,(uint8_t*)buffs,sizeof(buffs),10);
 			//Selisih B dan A
 			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rSelisih mobil B dengan A = ",27,10);
 			sprintf(buffg,"%d:%d:%d",minBA,secBA,milisecBA);
@@ -452,7 +446,7 @@ void Sensor3(void)
 
 		if(selisihsCA>=0){
 			secCA=abs(selisihsCA);
-		}else{//(selisihsAB<0)
+		}else{
 			if(minCA != 0){
 				secCA=100-secA+secC;
 				minCA=minCA-1;
@@ -507,8 +501,6 @@ void Sensor3(void)
 		else if (lapC==5){
 			//lapC=5;
 			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rTrack C = FINISH",18,10);
-			//sprintf(buffs," = %d%d:%d%d:%d%d",(minC/10),(minC%10),(secC/10),(secC%10),(milisecC/10),(milisecC%10));
-			//HAL_UART_Transmit(&huart1,(uint8_t*)buffs,sizeof(buffs),10);
 			//Selisih C dan A
 			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rSelisih mobil C dengan A = ",27,10);
 			sprintf(buffg,"%d:%d:%d",minCA,secCA,milisecCA);
@@ -577,7 +569,6 @@ void DearLCD(void)
 {
 	//LAP TIME
 	lcd_send_cmd(0x80);
-	//sprintf(buffer," [Lap Time] %d%d:%d%d:%d%d",(min/10),(min%10),(sec/10),(sec%10),(milisec/10),(milisec%10));
 	sprintf(buffer," [LAP TIME] ");
 	lcd_send_string(buffer);
 
@@ -687,8 +678,7 @@ void DearLCD(void)
 		sprintf(buffer,"TrackC = FINISH YEAY");
 		lcd_send_string(buffer);
 	}
-
-	///////////////////////////////////////////////////////////////////STOP Timer2
+	//STOP Timer2
 	if(lapA>=totlap && lapB>=totlap && lapC>=totlap)HAL_TIM_Base_Stop_IT(&htim2);
 }
 
@@ -712,15 +702,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	}
 
 	if(htim->Instance==TIM4){
-
-		///////////////////////////////Baca Tombol Dan Sensor
 		PBOn();
 		PBReset();
 		Sensor1();
 		Sensor2();
 		Sensor3();
-
-		///////////////////////////////Kirim LCD
 		DearLCD();
 	}
 }

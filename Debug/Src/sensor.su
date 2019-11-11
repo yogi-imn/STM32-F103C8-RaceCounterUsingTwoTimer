@@ -1,8 +1,8 @@
 sensor.c:57:6:PBOn	8	static
 sensor.c:97:6:PBReset	8	static
 sensor.c:165:6:Sensor1	56	static
-sensor.c:286:6:Sensor2	56	static
-sensor.c:405:6:Sensor3	56	static
-sensor.c:524:6:LCDAwal	16	static
-sensor.c:576:6:DearLCD	16	static
-sensor.c:695:6:HAL_TIM_PeriodElapsedCallback	16	static
+sensor.c:282:6:Sensor2	56	static
+sensor.c:399:6:Sensor3	56	static
+sensor.c:516:6:LCDAwal	16	static
+sensor.c:568:6:DearLCD	16	static
+sensor.c:685:6:HAL_TIM_PeriodElapsedCallback	16	static

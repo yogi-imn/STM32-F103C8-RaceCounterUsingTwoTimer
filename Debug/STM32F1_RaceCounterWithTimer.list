@@ -7973,7 +7973,6 @@ void Sensor1(void)
  8002fcc:	2102      	movs	r1, #2
  8002fce:	484b      	ldr	r0, [pc, #300]	; (80030fc <Sensor1+0x3e0>)
  8002fd0:	f7fd fbb9 	bl	8000746 <HAL_GPIO_WritePin>
-			//sprintf(buffs,"%d = %d:%d:%d",lapA,minA,secA,milisecA);
 			HAL_UART_Transmit(&huart1,(uint8_t*)"\n\rTrack A Lap:",14,10);
  8002fd4:	230a      	movs	r3, #10
  8002fd6:	220e      	movs	r2, #14
@@ -9458,7 +9457,6 @@ void DearLCD(void)
 	lcd_send_cmd(0x80);
  8003b54:	2080      	movs	r0, #128	; 0x80
  8003b56:	f7fe fc19 	bl	800238c <lcd_send_cmd>
-	//sprintf(buffer," [Lap Time] %d%d:%d%d:%d%d",(min/10),(min%10),(sec/10),(sec%10),(milisec/10),(milisec%10));
 	sprintf(buffer," [LAP TIME] ");
  8003b5a:	4a8a      	ldr	r2, [pc, #552]	; (8003d84 <DearLCD+0x234>)
  8003b5c:	4b8a      	ldr	r3, [pc, #552]	; (8003d88 <DearLCD+0x238>)
@@ -9931,8 +9929,7 @@ void DearLCD(void)
  8003ee6:	480f      	ldr	r0, [pc, #60]	; (8003f24 <DearLCD+0x3d4>)
  8003ee8:	f7fe fac0 	bl	800246c <lcd_send_string>
 	}
-
-	///////////////////////////////////////////////////////////////////STOP Timer2
+	//STOP Timer2
 	if(lapA>=totlap && lapB>=totlap && lapC>=totlap)HAL_TIM_Base_Stop_IT(&htim2);
  8003eec:	4b18      	ldr	r3, [pc, #96]	; (8003f50 <DearLCD+0x400>)
  8003eee:	681a      	ldr	r2, [r3, #0]
@@ -10051,8 +10048,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
  8003fc2:	4a0c      	ldr	r2, [pc, #48]	; (8003ff4 <HAL_TIM_PeriodElapsedCallback+0x9c>)
  8003fc4:	4293      	cmp	r3, r2
  8003fc6:	d10b      	bne.n	8003fe0 <HAL_TIM_PeriodElapsedCallback+0x88>
-
-		///////////////////////////////Baca Tombol Dan Sensor
 		PBOn();
  8003fc8:	f7fe fbfe 	bl	80027c8 <PBOn>
 		PBReset();
@@ -10063,8 +10058,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
  8003fd4:	f7ff f8ba 	bl	800314c <Sensor2>
 		Sensor3();
  8003fd8:	f7ff fad0 	bl	800357c <Sensor3>
-
-		///////////////////////////////Kirim LCD
 		DearLCD();
  8003fdc:	f7ff fdb8 	bl	8003b50 <DearLCD>
 	}
