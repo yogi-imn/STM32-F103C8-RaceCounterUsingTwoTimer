@@ -9,41 +9,41 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
   2 .rodata       000002b0  08004c0c  08004c0c  00014c0c  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  3 .ARM.extab    00000000  08004ebc  08004ebc  00020090  2**0
+  3 .ARM.extab    00000000  08004ebc  08004ebc  0002009c  2**0
                   CONTENTS
-  4 .ARM          00000000  08004ebc  08004ebc  00020090  2**0
+  4 .ARM          00000000  08004ebc  08004ebc  0002009c  2**0
                   CONTENTS
-  5 .preinit_array 00000000  08004ebc  08004ebc  00020090  2**0
+  5 .preinit_array 00000000  08004ebc  08004ebc  0002009c  2**0
                   CONTENTS, ALLOC, LOAD, DATA
   6 .init_array   00000004  08004ebc  08004ebc  00014ebc  2**2
                   CONTENTS, ALLOC, LOAD, DATA
   7 .fini_array   00000004  08004ec0  08004ec0  00014ec0  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  8 .data         00000090  20000000  08004ec4  00020000  2**2
+  8 .data         0000009c  20000000  08004ec4  00020000  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  9 .bss          000002a0  20000090  08004f54  00020090  2**2
+  9 .bss          00000294  2000009c  08004f60  0002009c  2**2
                   ALLOC
- 10 ._user_heap_stack 00000600  20000330  08004f54  00020330  2**0
+ 10 ._user_heap_stack 00000600  20000330  08004f60  00020330  2**0
                   ALLOC
- 11 .ARM.attributes 00000029  00000000  00000000  00020090  2**0
+ 11 .ARM.attributes 00000029  00000000  00000000  0002009c  2**0
                   CONTENTS, READONLY
- 12 .debug_info   0000ec04  00000000  00000000  000200b9  2**0
+ 12 .debug_info   0000ec04  00000000  00000000  000200c5  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_abbrev 00001e8c  00000000  00000000  0002ecbd  2**0
+ 13 .debug_abbrev 00001e8c  00000000  00000000  0002ecc9  2**0
                   CONTENTS, READONLY, DEBUGGING
- 14 .debug_aranges 00000e50  00000000  00000000  00030b50  2**3
+ 14 .debug_aranges 00000e50  00000000  00000000  00030b58  2**3
                   CONTENTS, READONLY, DEBUGGING
- 15 .debug_ranges 00000d68  00000000  00000000  000319a0  2**3
+ 15 .debug_ranges 00000d68  00000000  00000000  000319a8  2**3
                   CONTENTS, READONLY, DEBUGGING
- 16 .debug_macro  00014f6f  00000000  00000000  00032708  2**0
+ 16 .debug_macro  00014f6f  00000000  00000000  00032710  2**0
                   CONTENTS, READONLY, DEBUGGING
- 17 .debug_line   0000a8bf  00000000  00000000  00047677  2**0
+ 17 .debug_line   0000a8bf  00000000  00000000  0004767f  2**0
                   CONTENTS, READONLY, DEBUGGING
- 18 .debug_str    00074928  00000000  00000000  00051f36  2**0
+ 18 .debug_str    00074928  00000000  00000000  00051f3e  2**0
                   CONTENTS, READONLY, DEBUGGING
- 19 .comment      0000007b  00000000  00000000  000c685e  2**0
+ 19 .comment      0000007b  00000000  00000000  000c6866  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  00003f08  00000000  00000000  000c68dc  2**2
+ 20 .debug_frame  00003f08  00000000  00000000  000c68e4  2**2
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -60,7 +60,7 @@ Disassembly of section .text:
  800011e:	2301      	movs	r3, #1
  8000120:	7023      	strb	r3, [r4, #0]
  8000122:	bd10      	pop	{r4, pc}
- 8000124:	20000090 	.word	0x20000090
+ 8000124:	2000009c 	.word	0x2000009c
  8000128:	00000000 	.word	0x00000000
  800012c:	08004bf4 	.word	0x08004bf4
 
@@ -73,7 +73,7 @@ Disassembly of section .text:
  800013a:	f3af 8000 	nop.w
  800013e:	bd08      	pop	{r3, pc}
  8000140:	00000000 	.word	0x00000000
- 8000144:	20000094 	.word	0x20000094
+ 8000144:	200000a0 	.word	0x200000a0
  8000148:	08004bf4 	.word	0x08004bf4
 
 0800014c <HAL_Init>:
@@ -184,7 +184,7 @@ __weak HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority)
  80001c6:	3708      	adds	r7, #8
  80001c8:	46bd      	mov	sp, r7
  80001ca:	bd80      	pop	{r7, pc}
- 80001cc:	20000028 	.word	0x20000028
+ 80001cc:	20000034 	.word	0x20000034
  80001d0:	20000004 	.word	0x20000004
  80001d4:	20000000 	.word	0x20000000
 
@@ -3873,7 +3873,7 @@ if (((RCC_ClkInitStruct->ClockType) & RCC_CLOCKTYPE_PCLK1) == RCC_CLOCKTYPE_PCLK
  80016ac:	40022000 	.word	0x40022000
  80016b0:	40021000 	.word	0x40021000
  80016b4:	08004e70 	.word	0x08004e70
- 80016b8:	20000028 	.word	0x20000028
+ 80016b8:	20000034 	.word	0x20000034
  80016bc:	20000000 	.word	0x20000000
 
 080016c0 <HAL_RCC_GetSysClockFreq>:
@@ -4044,7 +4044,7 @@ uint32_t HAL_RCC_GetHCLKFreq(void)
  800178e:	46bd      	mov	sp, r7
  8001790:	bc80      	pop	{r7}
  8001792:	4770      	bx	lr
- 8001794:	20000028 	.word	0x20000028
+ 8001794:	20000034 	.word	0x20000034
 
 08001798 <HAL_RCC_GetPCLK1Freq>:
   * @note   Each time PCLK1 changes, this function must be called to update the
@@ -4136,7 +4136,7 @@ static void RCC_Delay(uint32_t mdelay)
  8001816:	bc80      	pop	{r7}
  8001818:	4770      	bx	lr
  800181a:	bf00      	nop
- 800181c:	20000028 	.word	0x20000028
+ 800181c:	20000034 	.word	0x20000034
  8001820:	10624dd3 	.word	0x10624dd3
 
 08001824 <HAL_TIM_Base_Init>:
@@ -7102,12 +7102,12 @@ void PBOn(void)
  80028da:	bd80      	pop	{r7, pc}
  80028dc:	40010c00 	.word	0x40010c00
  80028e0:	200001c4 	.word	0x200001c4
- 80028e4:	20000014 	.word	0x20000014
- 80028e8:	2000000c 	.word	0x2000000c
+ 80028e4:	20000020 	.word	0x20000020
+ 80028e8:	20000018 	.word	0x20000018
  80028ec:	40011000 	.word	0x40011000
  80028f0:	08004c20 	.word	0x08004c20
  80028f4:	2000027c 	.word	0x2000027c
- 80028f8:	200000b8 	.word	0x200000b8
+ 80028f8:	200000c4 	.word	0x200000c4
  80028fc:	200002bc 	.word	0x200002bc
 
 08002900 <PBReset>:
@@ -7232,8 +7232,8 @@ void PBReset(void)
  80029da:	bf00      	nop
  80029dc:	40010c00 	.word	0x40010c00
  80029e0:	200001c8 	.word	0x200001c8
- 80029e4:	20000018 	.word	0x20000018
- 80029e8:	2000000d 	.word	0x2000000d
+ 80029e4:	20000024 	.word	0x20000024
+ 80029e8:	20000019 	.word	0x20000019
  80029ec:	40011000 	.word	0x40011000
  80029f0:	08004c34 	.word	0x08004c34
  80029f4:	2000027c 	.word	0x2000027c
@@ -7483,17 +7483,17 @@ void PBReset(void)
  8002ba0:	4b58      	ldr	r3, [pc, #352]	; (8002d04 <PBReset+0x404>)
  8002ba2:	2200      	movs	r2, #0
  8002ba4:	601a      	str	r2, [r3, #0]
-		lapA=0;
+		lapA=1;
  8002ba6:	4b58      	ldr	r3, [pc, #352]	; (8002d08 <PBReset+0x408>)
- 8002ba8:	2200      	movs	r2, #0
+ 8002ba8:	2201      	movs	r2, #1
  8002baa:	601a      	str	r2, [r3, #0]
-		lapB=0;
+		lapB=1;
  8002bac:	4b57      	ldr	r3, [pc, #348]	; (8002d0c <PBReset+0x40c>)
- 8002bae:	2200      	movs	r2, #0
+ 8002bae:	2201      	movs	r2, #1
  8002bb0:	601a      	str	r2, [r3, #0]
-		lapC=0;
+		lapC=1;
  8002bb2:	4b57      	ldr	r3, [pc, #348]	; (8002d10 <PBReset+0x410>)
- 8002bb4:	2200      	movs	r2, #0
+ 8002bb4:	2201      	movs	r2, #1
  8002bb6:	601a      	str	r2, [r3, #0]
 
 		LCDAwal();
@@ -7524,11 +7524,11 @@ void PBReset(void)
  8002bec:	bd80      	pop	{r7, pc}
  8002bee:	bf00      	nop
  8002bf0:	200001c8 	.word	0x200001c8
- 8002bf4:	2000000d 	.word	0x2000000d
+ 8002bf4:	20000019 	.word	0x20000019
  8002bf8:	200002bc 	.word	0x200002bc
- 8002bfc:	200000b4 	.word	0x200000b4
- 8002c00:	200000b0 	.word	0x200000b0
- 8002c04:	200000ac 	.word	0x200000ac
+ 8002bfc:	200000c0 	.word	0x200000c0
+ 8002c00:	200000bc 	.word	0x200000bc
+ 8002c04:	200000b8 	.word	0x200000b8
  8002c08:	200000c8 	.word	0x200000c8
  8002c0c:	200000cc 	.word	0x200000cc
  8002c10:	200000d0 	.word	0x200000d0
@@ -7592,10 +7592,10 @@ void PBReset(void)
  8002cf8:	200001b8 	.word	0x200001b8
  8002cfc:	200001bc 	.word	0x200001bc
  8002d00:	200001c0 	.word	0x200001c0
- 8002d04:	200000b8 	.word	0x200000b8
- 8002d08:	200000bc 	.word	0x200000bc
- 8002d0c:	200000c0 	.word	0x200000c0
- 8002d10:	200000c4 	.word	0x200000c4
+ 8002d04:	200000c4 	.word	0x200000c4
+ 8002d08:	20000008 	.word	0x20000008
+ 8002d0c:	2000000c 	.word	0x2000000c
+ 8002d10:	20000010 	.word	0x20000010
  8002d14:	40011000 	.word	0x40011000
  8002d18:	40010c00 	.word	0x40010c00
 
@@ -7923,12 +7923,12 @@ void Sensor1(void)
  8002f26:	bf00      	nop
  8002f28:	40010c00 	.word	0x40010c00
  8002f2c:	200001cc 	.word	0x200001cc
- 8002f30:	2000001c 	.word	0x2000001c
- 8002f34:	2000000e 	.word	0x2000000e
+ 8002f30:	20000028 	.word	0x20000028
+ 8002f34:	2000001a 	.word	0x2000001a
  8002f38:	40011000 	.word	0x40011000
  8002f3c:	08004c4c 	.word	0x08004c4c
  8002f40:	2000027c 	.word	0x2000027c
- 8002f44:	200000b4 	.word	0x200000b4
+ 8002f44:	200000c0 	.word	0x200000c0
  8002f48:	200000d0 	.word	0x200000d0
  8002f4c:	200000e8 	.word	0x200000e8
  8002f50:	200000e4 	.word	0x200000e4
@@ -7936,7 +7936,7 @@ void Sensor1(void)
  8002f58:	200000f4 	.word	0x200000f4
  8002f5c:	20000178 	.word	0x20000178
  8002f60:	2000010c 	.word	0x2000010c
- 8002f64:	200000b0 	.word	0x200000b0
+ 8002f64:	200000bc 	.word	0x200000bc
  8002f68:	200000cc 	.word	0x200000cc
  8002f6c:	200000e0 	.word	0x200000e0
  8002f70:	200000dc 	.word	0x200000dc
@@ -7944,7 +7944,7 @@ void Sensor1(void)
  8002f78:	200000fc 	.word	0x200000fc
  8002f7c:	20000174 	.word	0x20000174
  8002f80:	20000114 	.word	0x20000114
- 8002f84:	200000ac 	.word	0x200000ac
+ 8002f84:	200000b8 	.word	0x200000b8
  8002f88:	200000c8 	.word	0x200000c8
  8002f8c:	200000d8 	.word	0x200000d8
  8002f90:	200000d4 	.word	0x200000d4
@@ -7956,11 +7956,11 @@ void Sensor1(void)
  8002fa8:	20000108 	.word	0x20000108
  8002fac:	200000ec 	.word	0x200000ec
  8002fb0:	20000104 	.word	0x20000104
- 8002fb4:	200000b8 	.word	0x200000b8
- 8002fb8:	200000bc 	.word	0x200000bc
-		else 			lapA=0;
+ 8002fb4:	200000c4 	.word	0x200000c4
+ 8002fb8:	20000008 	.word	0x20000008
+		else 			lapA=1;
  8002fbc:	4b4e      	ldr	r3, [pc, #312]	; (80030f8 <Sensor1+0x3dc>)
- 8002fbe:	2200      	movs	r2, #0
+ 8002fbe:	2201      	movs	r2, #1
  8002fc0:	601a      	str	r2, [r3, #0]
 
 		if(lapA<5){
@@ -8120,7 +8120,7 @@ void Sensor1(void)
  80030f2:	370c      	adds	r7, #12
  80030f4:	46bd      	mov	sp, r7
  80030f6:	bdf0      	pop	{r4, r5, r6, r7, pc}
- 80030f8:	200000bc 	.word	0x200000bc
+ 80030f8:	20000008 	.word	0x20000008
  80030fc:	40010c00 	.word	0x40010c00
  8003100:	08004c64 	.word	0x08004c64
  8003104:	2000027c 	.word	0x2000027c
@@ -8466,12 +8466,12 @@ void Sensor2(void)
  8003356:	e04c      	b.n	80033f2 <Sensor2+0x2a6>
  8003358:	40010c00 	.word	0x40010c00
  800335c:	200001d0 	.word	0x200001d0
- 8003360:	20000020 	.word	0x20000020
- 8003364:	2000000f 	.word	0x2000000f
+ 8003360:	2000002c 	.word	0x2000002c
+ 8003364:	2000001b 	.word	0x2000001b
  8003368:	40011000 	.word	0x40011000
  800336c:	08004ce8 	.word	0x08004ce8
  8003370:	2000027c 	.word	0x2000027c
- 8003374:	200000b4 	.word	0x200000b4
+ 8003374:	200000c0 	.word	0x200000c0
  8003378:	20000124 	.word	0x20000124
  800337c:	2000013c 	.word	0x2000013c
  8003380:	20000138 	.word	0x20000138
@@ -8479,7 +8479,7 @@ void Sensor2(void)
  8003388:	20000148 	.word	0x20000148
  800338c:	20000178 	.word	0x20000178
  8003390:	20000160 	.word	0x20000160
- 8003394:	200000b0 	.word	0x200000b0
+ 8003394:	200000bc 	.word	0x200000bc
  8003398:	20000120 	.word	0x20000120
  800339c:	20000134 	.word	0x20000134
  80033a0:	20000130 	.word	0x20000130
@@ -8487,7 +8487,7 @@ void Sensor2(void)
  80033a8:	20000150 	.word	0x20000150
  80033ac:	20000174 	.word	0x20000174
  80033b0:	20000168 	.word	0x20000168
- 80033b4:	200000ac 	.word	0x200000ac
+ 80033b4:	200000b8 	.word	0x200000b8
  80033b8:	2000011c 	.word	0x2000011c
  80033bc:	2000012c 	.word	0x2000012c
  80033c0:	20000128 	.word	0x20000128
@@ -8499,11 +8499,11 @@ void Sensor2(void)
  80033d8:	2000015c 	.word	0x2000015c
  80033dc:	20000140 	.word	0x20000140
  80033e0:	20000158 	.word	0x20000158
- 80033e4:	200000b8 	.word	0x200000b8
- 80033e8:	200000c0 	.word	0x200000c0
-		else 			lapB=0;
+ 80033e4:	200000c4 	.word	0x200000c4
+ 80033e8:	2000000c 	.word	0x2000000c
+		else 			lapB=1;
  80033ec:	4b4e      	ldr	r3, [pc, #312]	; (8003528 <Sensor2+0x3dc>)
- 80033ee:	2200      	movs	r2, #0
+ 80033ee:	2201      	movs	r2, #1
  80033f0:	601a      	str	r2, [r3, #0]
 
 		if(lapB<5){
@@ -8663,7 +8663,7 @@ void Sensor2(void)
  8003522:	370c      	adds	r7, #12
  8003524:	46bd      	mov	sp, r7
  8003526:	bdf0      	pop	{r4, r5, r6, r7, pc}
- 8003528:	200000c0 	.word	0x200000c0
+ 8003528:	2000000c 	.word	0x2000000c
  800352c:	40010c00 	.word	0x40010c00
  8003530:	08004d00 	.word	0x08004d00
  8003534:	2000027c 	.word	0x2000027c
@@ -9009,12 +9009,12 @@ void Sensor3(void)
  8003786:	bf00      	nop
  8003788:	40010c00 	.word	0x40010c00
  800378c:	200001d4 	.word	0x200001d4
- 8003790:	20000024 	.word	0x20000024
- 8003794:	20000010 	.word	0x20000010
+ 8003790:	20000030 	.word	0x20000030
+ 8003794:	2000001c 	.word	0x2000001c
  8003798:	40011000 	.word	0x40011000
  800379c:	08004d64 	.word	0x08004d64
  80037a0:	2000027c 	.word	0x2000027c
- 80037a4:	200000b4 	.word	0x200000b4
+ 80037a4:	200000c0 	.word	0x200000c0
  80037a8:	20000178 	.word	0x20000178
  80037ac:	20000190 	.word	0x20000190
  80037b0:	2000018c 	.word	0x2000018c
@@ -9022,7 +9022,7 @@ void Sensor3(void)
  80037b8:	2000019c 	.word	0x2000019c
  80037bc:	20000124 	.word	0x20000124
  80037c0:	200001b4 	.word	0x200001b4
- 80037c4:	200000b0 	.word	0x200000b0
+ 80037c4:	200000bc 	.word	0x200000bc
  80037c8:	20000174 	.word	0x20000174
  80037cc:	20000188 	.word	0x20000188
  80037d0:	20000184 	.word	0x20000184
@@ -9030,7 +9030,7 @@ void Sensor3(void)
  80037d8:	200001a4 	.word	0x200001a4
  80037dc:	20000120 	.word	0x20000120
  80037e0:	200001bc 	.word	0x200001bc
- 80037e4:	200000ac 	.word	0x200000ac
+ 80037e4:	200000b8 	.word	0x200000b8
  80037e8:	20000170 	.word	0x20000170
  80037ec:	20000180 	.word	0x20000180
  80037f0:	2000017c 	.word	0x2000017c
@@ -9042,11 +9042,11 @@ void Sensor3(void)
  8003808:	200001b0 	.word	0x200001b0
  800380c:	20000194 	.word	0x20000194
  8003810:	200001ac 	.word	0x200001ac
- 8003814:	200000b8 	.word	0x200000b8
- 8003818:	200000c4 	.word	0x200000c4
-		else 			lapC=0;
+ 8003814:	200000c4 	.word	0x200000c4
+ 8003818:	20000010 	.word	0x20000010
+		else 			lapC=1;
  800381c:	4b4e      	ldr	r3, [pc, #312]	; (8003958 <Sensor3+0x3dc>)
- 800381e:	2200      	movs	r2, #0
+ 800381e:	2201      	movs	r2, #1
  8003820:	601a      	str	r2, [r3, #0]
 
 		if(lapC<5){
@@ -9206,7 +9206,7 @@ void Sensor3(void)
  8003952:	370c      	adds	r7, #12
  8003954:	46bd      	mov	sp, r7
  8003956:	bdf0      	pop	{r4, r5, r6, r7, pc}
- 8003958:	200000c4 	.word	0x200000c4
+ 8003958:	20000010 	.word	0x20000010
  800395c:	40010c00 	.word	0x40010c00
  8003960:	08004d7c 	.word	0x08004d7c
  8003964:	2000027c 	.word	0x2000027c
@@ -9440,12 +9440,12 @@ void LCDAwal(void)
  8003b2c:	08004df4 	.word	0x08004df4
  8003b30:	08004df8 	.word	0x08004df8
  8003b34:	08004e00 	.word	0x08004e00
- 8003b38:	200000bc 	.word	0x200000bc
+ 8003b38:	20000008 	.word	0x20000008
  8003b3c:	08004e0c 	.word	0x08004e0c
  8003b40:	08004e14 	.word	0x08004e14
- 8003b44:	200000c0 	.word	0x200000c0
+ 8003b44:	2000000c 	.word	0x2000000c
  8003b48:	08004e1c 	.word	0x08004e1c
- 8003b4c:	200000c4 	.word	0x200000c4
+ 8003b4c:	20000010 	.word	0x20000010
 
 08003b50 <DearLCD>:
 
@@ -9757,20 +9757,20 @@ void DearLCD(void)
  8003d82:	bf00      	nop
  8003d84:	2000030c 	.word	0x2000030c
  8003d88:	08004de0 	.word	0x08004de0
- 8003d8c:	200000b4 	.word	0x200000b4
+ 8003d8c:	200000c0 	.word	0x200000c0
  8003d90:	08004e24 	.word	0x08004e24
  8003d94:	08004df4 	.word	0x08004df4
- 8003d98:	200000b0 	.word	0x200000b0
- 8003d9c:	200000ac 	.word	0x200000ac
- 8003da0:	200000bc 	.word	0x200000bc
- 8003da4:	20000008 	.word	0x20000008
+ 8003d98:	200000bc 	.word	0x200000bc
+ 8003d9c:	200000b8 	.word	0x200000b8
+ 8003da0:	20000008 	.word	0x20000008
+ 8003da4:	20000014 	.word	0x20000014
  8003da8:	08004df8 	.word	0x08004df8
  8003dac:	200000e4 	.word	0x200000e4
  8003db0:	200000dc 	.word	0x200000dc
  8003db4:	200000d4 	.word	0x200000d4
  8003db8:	08004e0c 	.word	0x08004e0c
  8003dbc:	08004e28 	.word	0x08004e28
- 8003dc0:	200000c0 	.word	0x200000c0
+ 8003dc0:	2000000c 	.word	0x2000000c
  8003dc4:	08004e14 	.word	0x08004e14
  8003dc8:	20000138 	.word	0x20000138
  8003dcc:	20000130 	.word	0x20000130
@@ -9955,11 +9955,11 @@ void DearLCD(void)
  8003f16:	bf00      	nop
  8003f18:	bdb0      	pop	{r4, r5, r7, pc}
  8003f1a:	bf00      	nop
- 8003f1c:	200000c0 	.word	0x200000c0
- 8003f20:	20000008 	.word	0x20000008
+ 8003f1c:	2000000c 	.word	0x2000000c
+ 8003f20:	20000014 	.word	0x20000014
  8003f24:	2000030c 	.word	0x2000030c
  8003f28:	08004e40 	.word	0x08004e40
- 8003f2c:	200000c4 	.word	0x200000c4
+ 8003f2c:	20000010 	.word	0x20000010
  8003f30:	08004e1c 	.word	0x08004e1c
  8003f34:	2000018c 	.word	0x2000018c
  8003f38:	08004e24 	.word	0x08004e24
@@ -9968,7 +9968,7 @@ void DearLCD(void)
  8003f44:	2000017c 	.word	0x2000017c
  8003f48:	08004e0c 	.word	0x08004e0c
  8003f4c:	08004e58 	.word	0x08004e58
- 8003f50:	200000bc 	.word	0x200000bc
+ 8003f50:	20000008 	.word	0x20000008
  8003f54:	200002bc 	.word	0x200002bc
 
 08003f58 <HAL_TIM_PeriodElapsedCallback>:
@@ -10066,9 +10066,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
  8003fe2:	3708      	adds	r7, #8
  8003fe4:	46bd      	mov	sp, r7
  8003fe6:	bd80      	pop	{r7, pc}
- 8003fe8:	200000ac 	.word	0x200000ac
- 8003fec:	200000b0 	.word	0x200000b0
- 8003ff0:	200000b4 	.word	0x200000b4
+ 8003fe8:	200000b8 	.word	0x200000b8
+ 8003fec:	200000bc 	.word	0x200000bc
+ 8003ff0:	200000c0 	.word	0x200000c0
  8003ff4:	40000800 	.word	0x40000800
 
 08003ff8 <HAL_MspInit>:
@@ -10838,9 +10838,9 @@ LoopFillZerobss:
   ldr r0, =_sdata
  8004368:	20000000 	.word	0x20000000
   ldr r3, =_edata
- 800436c:	20000090 	.word	0x20000090
+ 800436c:	2000009c 	.word	0x2000009c
   ldr r2, =_sbss
- 8004370:	20000090 	.word	0x20000090
+ 8004370:	2000009c 	.word	0x2000009c
   ldr r3, = _ebss
  8004374:	20000330 	.word	0x20000330
 
@@ -10859,7 +10859,7 @@ Infinite_Loop:
  800437e:	6818      	ldr	r0, [r3, #0]
  8004380:	4770      	bx	lr
  8004382:	bf00      	nop
- 8004384:	2000002c 	.word	0x2000002c
+ 8004384:	20000038 	.word	0x20000038
 
 08004388 <__libc_init_array>:
  8004388:	b570      	push	{r4, r5, r6, lr}
@@ -10917,7 +10917,7 @@ Infinite_Loop:
  8004400:	f85d eb04 	ldr.w	lr, [sp], #4
  8004404:	b003      	add	sp, #12
  8004406:	4770      	bx	lr
- 8004408:	2000002c 	.word	0x2000002c
+ 8004408:	20000038 	.word	0x20000038
  800440c:	ffff0208 	.word	0xffff0208
 
 08004410 <__ssputs_r>:

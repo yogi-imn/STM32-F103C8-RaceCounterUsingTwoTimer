@@ -16,7 +16,7 @@
 unsigned int milisec=0,sec=0,min=0;
 char buffer[21],buffs[13],buffg[6];
 unsigned int runstop=0;
-unsigned int lapA=0,lapB=0,lapC=0,totlap=5;
+unsigned int lapA=1,lapB=1,lapC=1,totlap=5;
 
 unsigned int milisecA=0,secA=0,minA=0,milisecAA=0,miliseclastA=0;
 unsigned int secAA=0,seclastA=0,minAA=0,minlastA=0;
@@ -150,9 +150,9 @@ void PBReset(void)
 		selisihmsCB=0;selisihsCB=0;selisihmCB=0;
 
 		runstop=0;
-		lapA=0;
-		lapB=0;
-		lapC=0;
+		lapA=1;
+		lapB=1;
+		lapC=1;
 
 		LCDAwal();
 		HAL_GPIO_WritePin(LED1_GPIO_Port,LED1_Pin,GPIO_PIN_RESET);
@@ -255,7 +255,7 @@ void Sensor1(void)
 		}
 
 		if(runstop==1)	lapA++;
-		else 			lapA=0;
+		else 			lapA=1;
 
 		if(lapA<5){
 			HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_Pin,GPIO_PIN_SET);
@@ -372,7 +372,7 @@ void Sensor2(void)
 		}
 
 		if(runstop==1)	lapB++;
-		else 			lapB=0;
+		else 			lapB=1;
 
 		if(lapB<5){
 			HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_Pin,GPIO_PIN_SET);
@@ -489,7 +489,7 @@ void Sensor3(void)
 		}
 
 		if(runstop==1)	lapC++;
-		else 			lapC=0;
+		else 			lapC=1;
 
 		if(lapC<5){
 			HAL_GPIO_WritePin(Buzzer_GPIO_Port,Buzzer_Pin,GPIO_PIN_SET);
